@@ -1,0 +1,3 @@
+NODE_ENV=production
+IP=172.26.5.163
+HTTP_PORT=80

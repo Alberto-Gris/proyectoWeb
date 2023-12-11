@@ -1,0 +1,945 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "REST API Proyecto Parcial 2",
+        "description": "<html><body>Esta es la documentacion de la API para una tienda en linea de una paleteria.</body></html>",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "3.136.124.198",
+    "basePath": "",
+    "tags": [
+        {
+            "name": "Usuarios",
+            "description": "API que maneja todos los servicios relacionados a los usuarios"
+        },
+        {
+            "name": "Productos",
+            "description": "API que tiene todos los servicios relacionados a los productos"
+        },
+        {
+            "name": "Ventas",
+            "description": "API que maneja todos los servicios relacionados a las ventas"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/usuarios/mostrarUsuarios/": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Listado de todos los usuarios que existen en la paleteria",
+                "description": "<p>Servicio que devuelve la información detallada de todos los usuarios que existen en la paleteria.</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "idU": 1,
+                                    "nombreU": "usuario1",
+                                    "contrasenaU": "hola123",
+                                    "rolU": 1
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/Usuario"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/usuarios/crearUsuario": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Este servicio crea un usuario",
+                "description": "<p>Servicio que permite crear un nuevo usuario, con los datos necesarios</p>",
+                "operationId": "create",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Usuario",
+                        "in": "body",
+                        "description": "Usuario agregado",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NuevoUsuario"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Insertado con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/usuarios/iniciarSesion": {
+            "post": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Este servicio es para iniciar sesion",
+                "parameters": [
+                    {
+                        "name": "Usuario",
+                        "in": "body",
+                        "description": "Los datos de inicio de sesion",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/inicioSesion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sesion iniciada con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/usuarios/actualizarUsuario/{idU}": {
+            "put": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Este servicio actualiza datos de un usuario en la base de datos",
+                "description": "<p>Servicio que permite editar la informaciòn del usuario, dado el id el mismo </p>",
+                "operationId": "update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "idU",
+                        "in": "path",
+                        "description": "Identificador del usuario",
+                        "type": "number",
+                        "required": true,
+                        "default": "4"
+                    },
+                    {
+                        "name": "Datos del Usuario",
+                        "in": "body",
+                        "description": "Datos del usuario",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/actualizarUsuario"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos actualizados con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/usuarios/eliminarUsuario/{idU}": {
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Este servicio elimina un usuario de la base de datos",
+                "description": "<p>Servicio que permite eliminar un usuario de la base de datos, dado el id del mismo</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idU",
+                        "in": "path",
+                        "required": true,
+                        "description": "identificador del usuario",
+                        "type": "number",
+                        "default": "1"
+                    }
+                ]
+            }
+        },
+        "/api/productos/mostrarProductos/{categoriaP}": {
+            "get": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Listado de todos los productos",
+                "description": "<p>Servicio que devuelve la información detallada de todos los productos que existen en la paleteria.</p>",
+                "parameters": [
+                    {
+                        "name": "categoriaP",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador de la categoria",
+                        "type": "number",
+                        "default": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "idP": 2,
+                                    "nombreP": "Helado de Vainilla",
+                                    "precioP": 15,
+                                    "descripcionP": "Un rico helado sabor Vainilla",
+                                    "tamanoP": "20grs",
+                                    "categoriaP": 1,
+                                    "cantidadP": 66
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/mostrarProductos"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/productos/insertarProducto": {
+            "post": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Este servicio crea un producto",
+                "description": "<p>Servicio que permite insertar un nuevo producto en la base de datos, con los datos necesarios</p>",
+                "operationId": "create",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Producto",
+                        "in": "body",
+                        "description": "Producto agregado",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/insertarProducto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Insertado con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/productos/actualizarProducto/{idP}": {
+            "put": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Este servicio actualiza datos de un producto",
+                "description": "<p>Servicio que permite editar la informaciòn del producto, dado el id el mismo </p>",
+                "operationId": "update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "idP",
+                        "in": "path",
+                        "description": "Identificador del producto",
+                        "type": "number",
+                        "required": true,
+                        "default": "4"
+                    },
+                    {
+                        "name": "Datos del Usuario",
+                        "in": "body",
+                        "description": "Datos del usuario",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/actualizarProducto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos actualizados con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/productos/eliminarProducto": {
+            "delete": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Este servicio elimina un producto",
+                "description": "<p>Servicio que permite eliminar un producto de la base de datos, dado el nombre del mismo</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "nombreP",
+                        "in": "body",
+                        "required": true,
+                        "description": "Nombre del producto",
+                        "schema": {
+                            "$ref": "#/definitions/eliminarProducto"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/ventas/mostrarTodosArticulos": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Listado de todos los artículos",
+                "description": "<p>Servicio que devuelve la información detallada de todos los articulos dentro de los carritos que existen en la base de datos.</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "idArticulo": 1,
+                                    "idVenta": 6,
+                                    "idProducto": 12,
+                                    "cantidadP": 3
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/mostrarCarritos"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/ventas/mostrarUnArticulo/{idVenta}": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Listado de los artículo",
+                "description": "<p>Servicio que devuelve la información detallada de todos los artículos dentro de un solo carrito. Se ingresa el id de la venta asignado a un carrito y devuelve los articulos dentro del mismo</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "idArticulo": 1,
+                                    "idVenta": 6,
+                                    "idProducto": 12,
+                                    "cantidadP": 3
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/mostrarCarritos"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/ventas/mostrarCarritos": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Listado de todos los carritos",
+                "description": "<p>Servicio que devuelve la información detallada de todos los carritos que existen en la base de datos. </p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "idV": 9,
+                                    "fecha": "2023-11-26T06:00:00.000Z",
+                                    "total": 0,
+                                    "idUsuario": 2
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/mostrarVentas"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/ventas/mostrarUnCarrito/{idVenta}": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Listado de un carrito",
+                "description": "<p>Servicio que devuelve la información detallada de un carrito que existe en la base de datos. Ingresando el id del usuario devolveria el carrito de ese usuario.</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "examples": {
+                            "application/json": [
+                                {
+                                    "idV": 9,
+                                    "fecha": "2023-11-26T06:00:00.000Z",
+                                    "total": 0,
+                                    "idUsuario": 2
+                                }
+                            ]
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/mostrarVenta"
+                        }
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/ventas/insertarArticulo": {
+            "post": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Este servicio inserta un artículo",
+                "description": "<p>Servicio que permite insertar un artículo al carrito, con el id de la venta para poder identificar a que carrito corresponde ese artículo</p>",
+                "operationId": "create",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Artículo",
+                        "in": "body",
+                        "description": "Artículo agregado",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/insertarArticulo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Insertado con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/ventas/insertarCarrito": {
+            "post": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Este servicio crea un carrito",
+                "description": "<p>Servicio que permite crear un carrito de productos, con todos los detalles de la venta y el usuario</p>",
+                "operationId": "create",
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Venta",
+                        "in": "body",
+                        "description": "Venta agregada",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/insertarCarrito"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Insertado con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/ventas/actualizarArticulo/{idArticulo}": {
+            "put": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Este servicio actualiza datos de un articulo",
+                "description": "<p>Servicio que permite editar la cantidad de un articulo del carrito, dado el id el mismo y asi modificar el numero productos que el usuario lleve.</p>",
+                "operationId": "update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "idArticulo",
+                        "in": "path",
+                        "description": "Identificador del articulo",
+                        "type": "number",
+                        "required": true,
+                        "default": "4"
+                    },
+                    {
+                        "name": "Datos del articulo",
+                        "in": "body",
+                        "description": "Datos del articulo",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/actualizarArticulo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos actualizados con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/ventas/actualizarTotal/{idV}": {
+            "put": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Este servicio actualiza el total",
+                "description": "<p>Servicio que permite actualizar el total del carrito solo insertando el id de la venta.</p>",
+                "operationId": "update",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "idV",
+                        "in": "path",
+                        "description": "Identificador de la venta",
+                        "type": "number",
+                        "required": true,
+                        "default": "4"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Datos actualizados con exito"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                }
+            }
+        },
+        "/api/Ventas/eliminarCarrito/{idV}": {
+            "delete": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Este servicio elimina un carrito",
+                "description": "<p>Servicio que permite eliminar un carrito de la base de datos.</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idV",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador de la venta",
+                        "type": "number",
+                        "default": "4"
+                    }
+                ]
+            }
+        },
+        "/api/Ventas/eliminarArticulo/{idArticulo}": {
+            "delete": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Este servicio elimina un artículo",
+                "description": "<p>Servicio que permite eliminar un articulo del carrito.</p>",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "Prohibido"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "idArticulo",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identificador del articulo",
+                        "type": "number",
+                        "default": "4"
+                    }
+                ]
+            }
+        },
+        "/api/Ventas/efectuarCompra/{idVenta}": {
+            "get": {
+                "tags": [
+                    "Ventas"
+                ],
+                "summary": "Listado de un carrito",
+                "description": "<p>Servicio que devuelve la información detallada de un carrito que existe en la base de datos. Ingresando el id del usuario devolveria el carrito de ese usuario.</p>",
+                "responses": {
+                    "200": {
+                        "description": "true"
+                    },
+                    "403": {
+                        "description": "false"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Usuario": {
+            "type": "object",
+            "properties": {
+                "idU": {
+                    "type": "number",
+                    "description": "Codigo que permite identificar al usuario"
+                },
+                "nombreU": {
+                    "type": "string",
+                    "description": "Nombre del usuario"
+                },
+                "rolU": {
+                    "type": "number",
+                    "description": "Codigo que permite identificar el rol del usuario"
+                },
+                "contrasenaU": {
+                    "type": "string",
+                    "description": "Contrasena del usuario"
+                }
+            }
+        },
+        "Usuarios": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Usuario"
+            }
+        },
+        "NuevoUsuario": {
+            "type": "object",
+            "properties": {
+                "nombreU": {
+                    "type": "string",
+                    "description": "Nombre del usuario"
+                },
+                "contrasenaU": {
+                    "type": "string",
+                    "description": "Contrasena del usuario"
+                },
+                "rolU": {
+                    "type": "number",
+                    "description": "Codigo que permite identificar el rol del usuario"
+                }
+            }
+        },
+        "inicioSesion": {
+            "type": "object",
+            "properties": {
+                "nombreU": {
+                    "type": "string",
+                    "description": "Nombre del usuario"
+                },
+                "contrasenaU": {
+                    "type": "string",
+                    "description": "Contrasena del usuario"
+                }
+            }
+        },
+        "actualizarUsuario": {
+            "type": "object",
+            "properties": {
+                "nombreU": {
+                    "type": "string",
+                    "description": "Nombre del usuario"
+                },
+                "contrasenaU": {
+                    "type": "string",
+                    "description": "Contrasena del usuario"
+                }
+            }
+        },
+        "mostrarProductos": {
+            "type": "object",
+            "properties": {
+                "idP": {
+                    "type": "number",
+                    "description": "Identificador del producto"
+                },
+                "nombreP": {
+                    "type": "string",
+                    "description": "Nombre del producto"
+                },
+                "precioP": {
+                    "type": "number",
+                    "description": "Precio del producto"
+                },
+                "descripcionP": {
+                    "type": "string",
+                    "description": "Una descripcion del producto"
+                },
+                "tamanoP": {
+                    "type": "string",
+                    "description": "Tamaño del producto"
+                },
+                "categoriaP": {
+                    "type": "number",
+                    "description": "Identificador de la categoria"
+                },
+                "cantidadP": {
+                    "type": "number",
+                    "description": "Numero de unidades presentes"
+                }
+            }
+        },
+        "insertarProducto": {
+            "type": "object",
+            "properties": {
+                "nombreP": {
+                    "type": "string",
+                    "description": "Nombre del producto"
+                },
+                "precioP": {
+                    "type": "number",
+                    "description": "Precio del producto"
+                },
+                "descripcionP": {
+                    "type": "string",
+                    "description": "Una descripcion del producto"
+                },
+                "tamanoP": {
+                    "type": "string",
+                    "description": "Tamaño del producto"
+                },
+                "categoriaP": {
+                    "type": "number",
+                    "description": "Identificador de la categoria"
+                },
+                "cantidadP": {
+                    "type": "number",
+                    "description": "Numero de unidades presentes"
+                }
+            }
+        },
+        "actualizarProducto": {
+            "type": "object",
+            "properties": {
+                "nombreP": {
+                    "type": "string",
+                    "description": "Nombre del producto"
+                },
+                "precioP": {
+                    "type": "number",
+                    "description": "Precio del producto"
+                },
+                "descripcionP": {
+                    "type": "string",
+                    "description": "Una descripcion del producto"
+                },
+                "tamanoP": {
+                    "type": "string",
+                    "description": "Tamaño del producto"
+                },
+                "categoriaP": {
+                    "type": "number",
+                    "description": "Identificador de la categoria"
+                },
+                "cantidadP": {
+                    "type": "number",
+                    "description": "Numero de unidades presentes"
+                }
+            }
+        },
+        "eliminarProducto": {
+            "type": "object",
+            "properties": {
+                "nombreP": {
+                    "type": "string",
+                    "description": "Nombre del producto"
+                }
+            }
+        },
+        "mostrarCarrito": {
+            "type": "object",
+            "properties": {
+                "idArticulo": {
+                    "type": "number",
+                    "description": "Identificador de un artículo del carrito"
+                },
+                "idVenta": {
+                    "type": "number",
+                    "description": "Identificador de la venta"
+                },
+                "idProducto": {
+                    "type": "number",
+                    "description": "Identificador del producto"
+                },
+                "cantidadP": {
+                    "type": "number",
+                    "description": "Cantidad de unidades seleccionadas"
+                }
+            }
+        },
+        "mostrarCarritos": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/mostrarCarrito"
+            }
+        },
+        "mostrarVenta": {
+            "type": "object",
+            "properties": {
+                "idV": {
+                    "type": "number",
+                    "description": "Identificador de la venta"
+                },
+                "fecha": {
+                    "type": "string",
+                    "description": "Fecha de la venta"
+                },
+                "total": {
+                    "type": "number",
+                    "description": "Suma total de los precios del carrito"
+                },
+                "idUsuario": {
+                    "type": "number",
+                    "description": "Identificador del usuario"
+                }
+            }
+        },
+        "mostrarVentas": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/mostrarVenta"
+            }
+        },
+        "insertarArticulo": {
+            "type": "object",
+            "properties": {
+                "idVenta": {
+                    "type": "number",
+                    "description": "Identificador de la venta"
+                },
+                "idProducto": {
+                    "type": "number",
+                    "description": "Identificador del producto"
+                },
+                "cantidadP": {
+                    "type": "number",
+                    "description": "Cantidad de unidades seleccionadas"
+                }
+            }
+        },
+        "insertarCarrito": {
+            "type": "object",
+            "properties": {
+                "fecha": {
+                    "type": "string",
+                    "description": "Fecha de la venta"
+                },
+                "total": {
+                    "type": "number",
+                    "description": "Suma total de los precios del carrito"
+                },
+                "idUsuario": {
+                    "type": "number",
+                    "description": "Identificador del usuario"
+                }
+            }
+        },
+        "actualizarArticulo": {
+            "type": "object",
+            "properties": {
+                "cantidadP": {
+                    "type": "number",
+                    "description": "Cantidad de unidades seleccionadas"
+                }
+            }
+        }
+    }
+}
